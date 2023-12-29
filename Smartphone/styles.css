@@ -1,0 +1,138 @@
+body {
+    margin: 0px;
+    padding: 0;
+    font: normal 20px "Times New Roman", Times, serif;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: minmax(25vh, auto) minmax(50vh, auto) minmax(25vh, auto);
+}
+
+
+
+.header {
+    display: grid;
+}
+
+.header-main{
+    display: grid;
+    grid-template-columns: minmax(25%, auto) auto;
+    background-color:blue;
+    text-align: right;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2%;
+}
+
+.X {
+    display: grid;
+    background-color:white;
+    text-align:center;
+    height: 13vh;
+    left: 5vw;
+    justify-content: center;
+    align-items: center;     
+    position: relative;
+    float: left;
+    margin-right: 5vw;
+}
+
+
+
+.main {
+    min-height: 50vh;
+    display: grid;
+    grid-template-columns: 25vw 75vw;
+}
+
+.main-left {
+    background-color:coral;
+    text-align: left;
+    padding: 2%;
+}
+
+.main-right {
+    display: grid;
+    grid-template-rows: 1.5vh minmax(48.5vh, auto); 
+}
+
+.main-right-top {
+    background-color:chartreuse;
+    white-space: nowrap;
+}
+
+.main-right-top ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    padding-right: 1.5%;
+}
+
+.main-right-top li{
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    min-width: 19.65%;
+    color:deeppink;
+}
+
+.main-right-top a:hover{
+    background-color: black;
+}
+
+.main-right-bottom {
+    display: grid;
+    grid-template-columns: 50vw 25vw;
+}
+
+.main-right-bottom-left {
+    background-color:white;
+    padding: 1%;
+}
+
+.main-right-bottom-right {
+    background-color:coral;
+    padding: 3%;
+}
+
+.right-big {
+    font: bold 10px "Times New Roman", Times, serif;
+    color:cyan;
+}
+
+
+
+
+.footer {
+    display: grid;
+}
+
+.footer-main{
+    display: grid;
+    grid-template-columns: auto minmax(25%, auto);
+    background-color:blue;
+    text-align: left;
+    align-items: center;
+    padding: 2%;
+    justify-content: space-between;
+}
+
+.Y {
+    background-color:white;
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    height: 13vh;
+    position: relative;
+    float: right;
+    right: 5vw;    
+    margin-left: 5vw;
+    text-align: center;
+}
+
+
+img{
+    max-width: 100%;
+    height: auto;
+}

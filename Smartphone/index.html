@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>LW1</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="../script.js" defer></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header-main">
+            <div class="X">
+                <h1>
+                    «Крилата фраза»
+                    <a href="https://eneyida.tv/6301-personazh.html" target="_blank">(1:28:13)</a>
+                </h1>
+                <button onclick="clearLocalStorage()">Clear localStorage</button>
+                <script>
+                    function clearLocalStorage() {
+                      localStorage.removeItem('tableData');
+                      alert('LocalStorage очищено!');
+                    }
+                  </script>
+            </div>
+
+            <img src="../img/1.jpg" alt="1">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam temporibus perferendis sapiente repellendus tempora molestias eaque a quas fugit. Saepe explicabo iure reprehenderit quas! Libero ex quidem officia iure veniam.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro recusandae ullam dignissimos eum nam fugiat quo voluptate necessitatibus, debitis esse beatae delectus minus totam, accusamus, et sunt inventore architecto optio.
+        </div>
+        
+    </header>
+
+
+    <main class="main">
+        <div class="main-left">
+            <ol>
+                <li>Ordered list of one element:)</li>
+            </ol>
+            <img src="../img/2.jpg" alt="1">
+        </div>
+
+        <div class="main-right">
+            <nav class="main-right-top">
+                <ul>
+                    <a href="https://youtu.be/dQw4w9WgXcQ?si=fS_TMT5UTKxzTLiH" target="_blank"><li>Meow</li></a>
+                    <a href="Ukraine.html"><li>Ukraine</li></a>
+                    <a href="option 3.html"><li>3rd option</li></a>
+                    <a href="lorem.html"><li>Lorem</li></a>
+                    <a href="1.html"><li>1</li></a>
+                </ul>
+            </nav>
+
+            <div class="main-right-bottom">
+                <div class="main-right-bottom-left">
+                    <img src="../img/Smurf cat.jpg" alt="Smurf cat" usemap="#Smurfcat">
+                    <map name="Smurfcat">
+                        <area shape="rect" coords="0, 0, 716, 718" href="https://www.youtube.com/watch?v=HSt0ZMl4TVQ" target="_blank">
+                    </map>
+
+                    <form id="numbersForm">
+                        <label for="numberInput">Введіть числа через пробіл:</label>
+                        <input type="text" id="numberInput" name="numberInput" required>
+                
+                        <button type="button" onclick="calculateMinMax()">Знайти мінімальне та максимальне</button>
+                    </form>
+                </div>
+
+                <div class="main-right-bottom-right">
+                    <form id="boldForm">
+                        <label for="boldCheckbox">Виділити текст жирним:</label>
+                        <input type="checkbox" id="boldCheckbox" name="boldCheckbox" onchange="setBoldText()">
+                    </form>
+
+                    <div class="right-big">Don't click the navigation button that corresponds to its page!!!</div>
+                    <img src="../img/5.jpg" alt="1">
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <footer class="footer">
+        <div class="footer-main">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam temporibus perferendis sapiente repellendus tempora molestias eaque a quas fugit. Saepe explicabo iure reprehenderit quas! Libero ex quidem officia iure veniam.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro recusandae ullam dignissimos eum nam fugiat quo voluptate necessitatibus, debitis esse beatae delectus minus totam, accusamus, et sunt inventore architecto optio.
+            <img src="../img/6.jpg" alt="1">
+            <div class="Y">
+                <h1>Тут мав бути "Y"</h1>
+            </div>
+        </div>
+
+        
+    </footer>
+
+</body>
+
+</html>

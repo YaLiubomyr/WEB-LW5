@@ -1,0 +1,148 @@
+body {
+    margin: 0px;
+    padding: 0;
+    font: normal 20px "Times New Roman", Times, serif;
+    overflow-x: hidden;
+}
+
+
+
+.header {
+    min-height: 25vh;
+    display: flex;
+}
+
+.header-main{
+    background-color:blue;
+    text-align: right;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1%;
+    justify-content: space-between;
+}
+
+.X {
+    background-color:white;
+    text-align:center;
+    min-width: 25%;
+    height: 13vh;
+    left: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;     
+    position: relative;
+    float: left;
+    margin-right: 5vw;
+}
+
+
+
+.main {
+    min-height: 50vh;
+    display: flex;
+}
+
+.main-left {
+    background-color:coral;
+    text-align: left;
+    width: 25vw;
+    min-height: 100%;
+    padding: 1%;
+}
+
+.main-right {
+    width: 75vw;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-right-top {
+    background-color:chartreuse;
+    height: 3vh;
+    white-space: nowrap;
+}
+
+.main-right-top ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.main-right-top li{
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    width: 19.65%;
+    color:deeppink;
+}
+
+.main-right-top a:hover{
+    background-color: black;
+  }
+
+.main-right-bottom {
+    min-height: calc(100% - 3vh);
+    display: flex;
+    flex-direction: row;
+}
+
+.main-right-bottom-left {
+    background-color:white;
+    width: 50vw;
+    min-height: calc(100% - 3vh);
+    padding: 1%;
+}
+
+.main-right-bottom-right {
+    background-color:coral;
+    width: 25vw;
+    min-height: calc(100% - 3vh);
+    padding: 1%;
+}
+
+.right-big {
+    font: bold 60px "Times New Roman", Times, serif;
+    color:cyan;
+}
+
+
+
+
+.footer {
+    min-height: 25vh;
+    display: flex;
+}
+
+.footer-main{
+    background-color:blue;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1%;
+    justify-content: space-between;
+}
+
+.Y {
+    background-color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;     
+    min-width: 25%;
+    height: 10vh;
+    position: relative;
+    float: right;
+    align-self: center;
+    right: 5vw;    
+    margin-left: 5vw;
+    text-align: center;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+}
