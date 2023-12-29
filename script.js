@@ -142,6 +142,28 @@ document.addEventListener("DOMContentLoaded", function () {
       const rowCountInput = form.querySelector("#rowCountInput");
       const rowCount = parseInt(rowCountInput.value);
   
+      if (isNaN(rowCount) || rowCount <= 0) {
+        alert("Будь ласка, введіть коректну кількість рядків.");
+        return;
+      }
+  
+      const table = createEditableTable(rowCount);
+      const saveButton = document.createElement("button");
+      saveButton.type = "button";
+      saveButton.textContent = "Зберегти в localStorage";
+      saveButton.addEventListener("click", function () {
+        saveTableData(blockId, table);
+      });
+  
+      const block = document.querySelector(`.${blockId}`);
+      block.innerHTML = "";
+      block.appendChild(table);
+      block.appendChild(saveButton);
+  
+      form.remove();
+    };
+  
+    function createEditableTable(rowCount) {
       const table = document.createElement("table");
       table.style.width = "100%";
       table.style.borderCollapse = "collapse";
@@ -158,48 +180,71 @@ document.addEventListener("DOMContentLoaded", function () {
         cell.textContent = `Рядок ${i + 1}`;
         cell.style.padding = "12px";
         cell.style.textAlign = "left";
+        cell.setAttribute("contenteditable", "true");
   
         row.appendChild(cell);
         table.appendChild(row);
       }
   
-      const editButton = document.createElement("button");
-      editButton.type = "button";
-      editButton.textContent = "Редагувати таблицю";
-      editButton.addEventListener("click", function () {
-        enableTableEditing(table);
-        editButton.disabled = true;
-        saveButton.disabled = false;
-      });
-      editButton.style.marginTop = "10px";
-      editButton.style.padding = "10px 20px";
-      editButton.style.backgroundColor = "#2196F3";
-      editButton.style.color = "white";
-      editButton.style.border = "none";
-      editButton.style.borderRadius = "4px";
-      editButton.style.cursor = "pointer";
-      editButton.style.fontSize = "16px";
-      editButton.style.transition = "background-color 0.3s";
+      return table;
+    }
   
-      const saveButton = document.createElement("button");
-      saveButton.type = "button";
-      saveButton.textContent = "Зберегти таблицю";
-      saveButton.addEventListener("click", function () {
-        disableTableEditing(table);
-        saveButton.disabled = true;
-        editButton.disabled = false;
-        clearLocalStorageButton.disabled = false;
+    function saveTableData(blockId, table) {
+      const rows = table.querySelectorAll("tr");
+      const rowData = [];
+  
+      rows.forEach((row) => {
+        const cells = row.querySelectorAll("td");
+        const cellData = [];
+  
+        cells.forEach((cell) => {
+          cellData.push(cell.textContent);
+        });
+  
+        rowData.push(cellData);
       });
-      saveButton.style.marginTop = "10px";
-      saveButton.style.padding = "10px 20px";
-      saveButton.style.backgroundColor = "#4CAF50";
-      saveButton.style.color = "white";
-      saveButton.style.border = "none";
-      saveButton.style.borderRadius = "4px";
-      saveButton.style.cursor = "pointer";
-      saveButton.style.fontSize = "16px";
-      saveButton.style.transition = "background-color 0.3s";
-      saveButton.disabled = true;
+  
+      const tableData = {
+        rowCount: rowData.length,
+        data: rowData,
+      };
+  
+      localStorage.setItem(`${blockId}TableData`, JSON.stringify(tableData));
+    }
+  
+    function checkLocalStorage() {
+      const blockIds = ["header-main", "main-left", "main-right-bottom-left", "main-right-bottom-right", "footer-main"];
+  
+      blockIds.forEach((blockId) => {
+        const storedData = localStorage.getItem(`${blockId}TableData`);
+        if (storedData) {
+          const tableData = JSON.parse(storedData);
+          createTableWithStoredData(blockId, tableData.rowCount, tableData.data);
+        }
+      });
+    }
+  
+    function createTableWithStoredData(blockId, rowCount, data) {
+      const table = document.createElement("table");
+      table.style.width = "100%";
+      table.style.borderCollapse = "collapse";
+      table.style.marginBottom = "20px";
+      table.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+      table.style.borderRadius = "8px";
+      table.style.overflow = "hidden";
+  
+      for (let i = 0; i < rowCount; i++) {
+        const row = document.createElement("tr");
+        row.style.border = "1px solid #ddd";
+  
+        const cell = document.createElement("td");
+        cell.textContent = data[i] ? data[i].join(" | ") : `Рядок ${i + 1}`;
+        cell.style.padding = "12px";
+        cell.style.textAlign = "left";
+  
+        row.appendChild(cell);
+        table.appendChild(row);
+      }
   
       const clearLocalStorageButton = document.createElement("button");
       clearLocalStorageButton.type = "button";
@@ -208,52 +253,13 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.clear();
         location.reload();
       });
-      clearLocalStorageButton.style.marginTop = "10px";
-      clearLocalStorageButton.style.padding = "10px 20px";
-      clearLocalStorageButton.style.backgroundColor = "#FF0000";
-      clearLocalStorageButton.style.color = "white";
-      clearLocalStorageButton.style.border = "none";
-      clearLocalStorageButton.style.borderRadius = "4px";
-      clearLocalStorageButton.style.cursor = "pointer";
-      clearLocalStorageButton.style.fontSize = "16px";
-      clearLocalStorageButton.style.transition = "background-color 0.3s";
   
       const block = document.querySelector(`.${blockId}`);
       block.innerHTML = "";
       block.appendChild(table);
-      block.appendChild(editButton);
-      block.appendChild(saveButton);
       block.appendChild(clearLocalStorageButton);
-  
-      const thCells = table.querySelectorAll("th, td");
-      thCells.forEach((cell) => {
-        cell.style.border = "1px solid #ddd";
-        cell.style.padding = "12px";
-        cell.style.textAlign = "left";
-      });
-  
-      const thElements = table.querySelectorAll("th");
-      thElements.forEach((th) => {
-        th.style.backgroundColor = "#f2f2f2";
-      });
-  
-      form.remove();
-    };
-  
-    function enableTableEditing(table) {
-      table.setAttribute("contenteditable", "true");
-      const cells = table.querySelectorAll("td");
-      cells.forEach((cell) => {
-        cell.setAttribute("contenteditable", "true");
-      });
     }
   
-    function disableTableEditing(table) {
-      table.setAttribute("contenteditable", "false");
-      const cells = table.querySelectorAll("td");
-      cells.forEach((cell) => {
-        cell.setAttribute("contenteditable", "false");
-      });
-    }
+    checkLocalStorage();
   });
   
