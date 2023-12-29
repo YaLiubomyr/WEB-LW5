@@ -103,78 +103,157 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Створення таблиці
-document.addEventListener('DOMContentLoaded', function () {
-    var imageBlocks = document.querySelectorAll('body img');
-
-    imageBlocks.forEach(function (imageBlock) {
-        var formCreated = false;
-        var form;
-        var table;
-
-        imageBlock.addEventListener('mouseenter', function () {
-            if (!formCreated) {
-                form = document.createElement('form');
-                form.innerHTML = '<label for="rowCount">Введіть кількість рядків для таблиці:</label>' +
-                    '<input type="number" id="rowCount" name="rowCount" min="1" required>' +
-                    '<input type="submit" value="Створити таблицю">';
-
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    createTable(imageBlock.parentNode, event.target.rowCount.value);
-                    formCreated = true;
-                    form.remove();
-                    addSaveButton();
-                });
-
-                imageBlock.parentNode.appendChild(form);
-                formCreated = true;
-            }
-        });
-
-        function createTable(container, rowCount) {
-            if (!isNaN(rowCount) && rowCount > 0) {
-                table = document.createElement('table');
-                table.style.borderCollapse = 'collapse';
-                table.setAttribute('contenteditable', 'true');
-
-                for (var i = 0; i < rowCount; i++) {
-                    var row = table.insertRow();
-                    var cell = row.insertCell(0);
-                    cell.textContent = 'Рядок ' + (i + 1);
-                    cell.style.border = '1px solid #ddd';
-                    cell.style.padding = '8px';
-                    cell.style.backgroundColor = '#f2f2f2';
-                }
-
-                var headerRow = table.insertRow(0);
-                var headerCell = headerRow.insertCell(0);
-                headerCell.textContent = 'Заголовок';
-                headerCell.style.border = '1px solid #ddd';
-                headerCell.style.padding = '8px';
-                headerCell.style.backgroundColor = '#4CAF50';
-                headerCell.style.color = 'white';
-
-                imageBlock.parentNode.insertBefore(table, form.nextSibling);
-            } else {
-                alert('Введіть коректне число більше 0.');
-            }
+document.addEventListener("DOMContentLoaded", function () {
+    const formShown = {};
+  
+    addEventListenerToBlock("header-main");
+    addEventListenerToBlock("main-left");
+    addEventListenerToBlock("main-right-bottom-left");
+    addEventListenerToBlock("main-right-bottom-right");
+    addEventListenerToBlock("footer-main");
+  
+    function addEventListenerToBlock(blockId) {
+      const block = document.querySelector(`.${blockId}`);
+      const img = block.querySelector("img");
+  
+      img.addEventListener("mouseover", function () {
+        if (!formShown[blockId]) {
+          createTableForm(blockId);
+          formShown[blockId] = true;
         }
-
-        function addSaveButton() {
-            var saveButton = document.createElement('button');
-            saveButton.textContent = 'Save to localStorage';
-            saveButton.addEventListener('click', function () {
-                var tableData = {
-                    rowCount: table.rows.length - 1,
-                    content: table.outerHTML
-                };
-                localStorage.setItem('tableData', JSON.stringify(tableData));
-
-                imageBlock.parentNode.innerHTML = table.outerHTML;
-            });
-
-            imageBlock.parentNode.appendChild(saveButton);
-        }
-
-    });
-});
+      });
+    }
+  
+    function createTableForm(blockId) {
+      const form = document.createElement("form");
+      form.id = "tableForm";
+      form.innerHTML = `
+        <label for="rowCountInput">Кількість рядків:</label>
+        <input type="number" id="rowCountInput" name="rowCountInput" required>
+        <button type="button" onclick="createTable('${blockId}')">Створити таблицю</button>
+      `;
+  
+      const block = document.querySelector(`.${blockId}`);
+      block.appendChild(form);
+    }
+  
+    window.createTable = function (blockId) {
+      const form = document.getElementById("tableForm");
+      const rowCountInput = form.querySelector("#rowCountInput");
+      const rowCount = parseInt(rowCountInput.value);
+  
+      const table = document.createElement("table");
+      table.style.width = "100%";
+      table.style.borderCollapse = "collapse";
+      table.style.marginBottom = "20px";
+      table.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+      table.style.borderRadius = "8px";
+      table.style.overflow = "hidden";
+  
+      for (let i = 0; i < rowCount; i++) {
+        const row = document.createElement("tr");
+        row.style.border = "1px solid #ddd";
+  
+        const cell = document.createElement("td");
+        cell.textContent = `Рядок ${i + 1}`;
+        cell.style.padding = "12px";
+        cell.style.textAlign = "left";
+  
+        row.appendChild(cell);
+        table.appendChild(row);
+      }
+  
+      const editButton = document.createElement("button");
+      editButton.type = "button";
+      editButton.textContent = "Редагувати таблицю";
+      editButton.addEventListener("click", function () {
+        enableTableEditing(table);
+        editButton.disabled = true;
+        saveButton.disabled = false;
+      });
+      editButton.style.marginTop = "10px";
+      editButton.style.padding = "10px 20px";
+      editButton.style.backgroundColor = "#2196F3";
+      editButton.style.color = "white";
+      editButton.style.border = "none";
+      editButton.style.borderRadius = "4px";
+      editButton.style.cursor = "pointer";
+      editButton.style.fontSize = "16px";
+      editButton.style.transition = "background-color 0.3s";
+  
+      const saveButton = document.createElement("button");
+      saveButton.type = "button";
+      saveButton.textContent = "Зберегти таблицю";
+      saveButton.addEventListener("click", function () {
+        disableTableEditing(table);
+        saveButton.disabled = true;
+        editButton.disabled = false;
+        clearLocalStorageButton.disabled = false;
+      });
+      saveButton.style.marginTop = "10px";
+      saveButton.style.padding = "10px 20px";
+      saveButton.style.backgroundColor = "#4CAF50";
+      saveButton.style.color = "white";
+      saveButton.style.border = "none";
+      saveButton.style.borderRadius = "4px";
+      saveButton.style.cursor = "pointer";
+      saveButton.style.fontSize = "16px";
+      saveButton.style.transition = "background-color 0.3s";
+      saveButton.disabled = true;
+  
+      const clearLocalStorageButton = document.createElement("button");
+      clearLocalStorageButton.type = "button";
+      clearLocalStorageButton.textContent = "Очистити localStorage";
+      clearLocalStorageButton.addEventListener("click", function () {
+        localStorage.clear();
+        location.reload();
+      });
+      clearLocalStorageButton.style.marginTop = "10px";
+      clearLocalStorageButton.style.padding = "10px 20px";
+      clearLocalStorageButton.style.backgroundColor = "#FF0000";
+      clearLocalStorageButton.style.color = "white";
+      clearLocalStorageButton.style.border = "none";
+      clearLocalStorageButton.style.borderRadius = "4px";
+      clearLocalStorageButton.style.cursor = "pointer";
+      clearLocalStorageButton.style.fontSize = "16px";
+      clearLocalStorageButton.style.transition = "background-color 0.3s";
+  
+      const block = document.querySelector(`.${blockId}`);
+      block.innerHTML = "";
+      block.appendChild(table);
+      block.appendChild(editButton);
+      block.appendChild(saveButton);
+      block.appendChild(clearLocalStorageButton);
+  
+      const thCells = table.querySelectorAll("th, td");
+      thCells.forEach((cell) => {
+        cell.style.border = "1px solid #ddd";
+        cell.style.padding = "12px";
+        cell.style.textAlign = "left";
+      });
+  
+      const thElements = table.querySelectorAll("th");
+      thElements.forEach((th) => {
+        th.style.backgroundColor = "#f2f2f2";
+      });
+  
+      form.remove();
+    };
+  
+    function enableTableEditing(table) {
+      table.setAttribute("contenteditable", "true");
+      const cells = table.querySelectorAll("td");
+      cells.forEach((cell) => {
+        cell.setAttribute("contenteditable", "true");
+      });
+    }
+  
+    function disableTableEditing(table) {
+      table.setAttribute("contenteditable", "false");
+      const cells = table.querySelectorAll("td");
+      cells.forEach((cell) => {
+        cell.setAttribute("contenteditable", "false");
+      });
+    }
+  });
+  
