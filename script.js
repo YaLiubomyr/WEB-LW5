@@ -142,11 +142,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const rowCountInput = form.querySelector("#rowCountInput");
       const rowCount = parseInt(rowCountInput.value);
   
-      if (isNaN(rowCount) || rowCount <= 0) {
-        alert("Будь ласка, введіть коректну кількість рядків.");
-        return;
-      }
-  
       const table = createEditableTable(rowCount);
       const saveButton = document.createElement("button");
       saveButton.type = "button";
