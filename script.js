@@ -24,92 +24,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Пошук мінімаксу
 document.addEventListener('DOMContentLoaded', function () {
-    var inputNumbers = document.querySelectorAll('.main-right-bottom-left input');
+    var cookiesExist = document.cookie.indexOf('min=') !== -1 && document.cookie.indexOf('max=') !== -1;
 
-    var numbers = [];
-    inputNumbers.forEach(function (input) {
-        numbers.push(parseFloat(input.value));
-    });
+    if (cookiesExist) {
+        var min = getCookie('min');
+        var max = getCookie('max');
+        alert('Min: ' + min + '\nMax: ' + max);
 
-    var minValue = Math.min.apply(null, numbers);
-    var maxValue = Math.max.apply(null, numbers);
+        var saveData = confirm('Бажаєте зберегти дані у cookies?');
 
-    document.cookie = 'minValue=' + minValue;
-    document.cookie = 'maxValue=' + maxValue;
-
-    window.addEventListener('beforeunload', function () {
-        var savedData = 'Мінімальне число: ' + minValue + ', Максимальне число: ' + maxValue;
-        if (confirm(savedData + '\nЗберегти дані?')) {
-            alert('Дані збережено в cookies. Перезавантажте сторінку.');
-        } else {
-            document.cookie = 'minValue=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            document.cookie = 'maxValue=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        if (saveData) {
+            alert('Дані будуть збережені у cookies. Перезавантажте сторінку.');
         }
-    });
+        else {
+            document.cookie = 'min=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'max=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            location.reload();
+        }
+    } else {
+        document.getElementById('numbersForm').style.display = 'block';
+    }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    function calculateMinMax() {
-        var inputElement = document.getElementById('numberInput');
-        var inputValues = inputElement.value.split(' ').map(function (value) {
-            return parseFloat(value);
-        });
+function calculateMinMax() {
+    var input = document.getElementById('numberInput').value;
+    var numbers = input.split(' ').map(Number);
 
-        var minValue = Math.min.apply(null, inputValues);
-        var maxValue = Math.max.apply(null, inputValues);
+    if (numbers.length > 0) {
+        var min = Math.min(...numbers);
+        var max = Math.max(...numbers);
 
-        var resultElement = document.getElementById('result');
-        resultElement.innerHTML = 'Мінімальне число: ' + minValue + '<br>Максимальне число: ' + maxValue;
+        alert('Min: ' + min + '\nMax: ' + max);
+
+        document.cookie = 'min=' + min + '; path=/;';
+        document.cookie = 'max=' + max + '; path=/;';
+
+        document.getElementById('numbersForm').style.display = 'none';
+    } else {
+        alert('Будь ласка, введіть числа у поле.');
     }
+}
 
-    window.calculateMinMax = calculateMinMax;
-});
+function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+}
 
-document.addEventListener('DOMContentLoaded', function () {
-    function calculateMinMax() {
-        var inputElement = document.getElementById('numberInput');
-        var inputValues = inputElement.value.split(' ').map(function (value) {
-            return parseFloat(value);
-        });
-
-        var minValue = Math.min.apply(null, inputValues);
-        var maxValue = Math.max.apply(null, inputValues);
-
-        document.cookie = 'minValue=' + minValue;
-        document.cookie = 'maxValue=' + maxValue;
-
-        alert('Мінімальне число: ' + minValue + '\nМаксимальне число: ' + maxValue);
-
-        var savedData = getCookie('minValue') + ', ' + getCookie('maxValue');
-        if (savedData) {
-            if (confirm(savedData + '\nЗберегти дані?')) {
-                alert('Дані збережено в cookies. Перезавантажте сторінку.');
-            } else {
-                document.cookie = 'minValue=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-                document.cookie = 'maxValue=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            }
-        }
-    }
-
-    function getCookie(name) {
-        var matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-
-    window.calculateMinMax = calculateMinMax;
-
-    var savedData = getCookie('minValue') + ', ' + getCookie('maxValue');
-    if (savedData) {
-        if (confirm(savedData + '\nЗберегти дані?')) {
-            alert('Дані збережено в cookies. Перезавантажте сторінку.');
-        } else {
-            document.cookie = 'minValue=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            document.cookie = 'maxValue=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        }
-    }
-});
 
 // Встановлення жирності
 document.addEventListener('DOMContentLoaded', function () {
